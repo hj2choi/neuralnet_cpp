@@ -15,7 +15,7 @@ void showVectorVals(std::string label, std::vector<double> &v)
 
 int main()
 {
-    TrainingData trainData("./trainingData.txt");
+    TrainingData trainData("./training(A.B)U(B.C)U(C.D).txt");
     // e.g., { 2, 4, 1 }
     std::vector<unsigned> topology;
 
