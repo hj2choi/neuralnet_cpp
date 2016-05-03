@@ -35,7 +35,6 @@ Net::Net(const std::vector<unsigned> &topology, const double eta) {
       temp.push_back(unit);
 
     }
-    //std::cout << temp.size() << std::endl;
     layers->push_back(temp);
     //std::cout << "information on layer just added: size=" << layers->back().size()<<endl;
   }
@@ -125,7 +124,6 @@ void Net::getResults(std::vector<double> &resultVals) const {
   resultVals.erase(resultVals.begin(), resultVals.end());
   for (int i=0; i<layers->at(layers->size()-1).size(); ++i) {
     resultVals.push_back(layers->at(layers->size()-1).at(i).out);
-    //cout << "input at " << i << " =>" << layers->at(0).at(i).out << endl;
   }
 }
 
