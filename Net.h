@@ -8,8 +8,6 @@
 #include <cstdlib>
 #include "Neuron.h"
 
-// activation function. it is currently implemented with sigmoid function
-double activationFunc(double net);
 
 class Net
 {
@@ -24,7 +22,7 @@ public:
 	//   e.g. {2, 4, 1} represents 2 neurons for the first layer, 4 for the second layer, 1 for last layer
 	// if you want to hard-code the structure, just ignore the variable topology
 	// eta: learning rate
-	Net(const std::vector<unsigned> &topology, const double eta);
+	Net(const std::vector<unsigned> &topology, const double eta, double (*atvfunc)(double), double (*atv_derv)(double));
 
 	// given an input sample inputVals, propagate input forward, compute the output of each neuron
 	void feedForward(const std::vector<double> &inputVals);
@@ -39,15 +37,13 @@ public:
 	double getError(void) const;
 
 
-	/*
-	    Add what you need in the below
-	*/
-
-
-	// ...
-
 private:
 	// ...
+	// activation function, passed in as a pointer
+	double (*activation)(double);
+	// derivative of activation function
+	double (*atv_derivative)(double);
+
 	std::vector<unsigned> topology;
 	double eta;
 	const static double alpha = 0.9; // momentum term, range: [0 1]
@@ -57,7 +53,6 @@ private:
 	const std::vector<double> *targetVals;
 	//std::vector< std::vector<double> > *links;
 
-	// activation function, (sigmoid function)
 
 
 };

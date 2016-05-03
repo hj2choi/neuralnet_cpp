@@ -13,6 +13,15 @@ void showVectorVals(std::string label, std::vector<double> &v)
     std::cout << std::endl;
 }
 
+double activationFunc(double net) {
+  return 1.0/(1.0+exp(-net));
+}
+
+double activationFuncDerivative(double net) {
+  return activationFunc(net)*(1-activationFunc(net));
+}
+
+
 int main()
 {
     TrainingData trainData("./trainingData.txt");
@@ -23,7 +32,7 @@ int main()
     // get the structure of the net
     trainData.getTopology(topology);
 
-    Net myNet(topology, ETA);
+    Net myNet(topology, ETA, &activationFunc, &activationFuncDerivative);
 
     std::vector<double> inputVals, targetVals, resultVals;
     int trainingIteration = 0;
