@@ -16,6 +16,7 @@ double activationFunc(double net);
 // I had to realize that I don't really need this struct here.
 struct Link {
 	double weight;
+	double prevDeltaWeight;
 };
 
 
@@ -79,6 +80,7 @@ private:
 	// ...
 	std::vector<unsigned> topology;
 	double eta;
+	const static double alpha = 0.9; // momentum term, range: [0 1]
 
 	std::vector< std::vector<Neuron> > *layers;
 

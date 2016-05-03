@@ -108,7 +108,8 @@ void Net::backProp(const std::vector<double> &targetVals) {
       // for each link
       for (int k=0; k<layers->at(i).at(j).links.size(); ++k) {
         double deltaWeight = eta * layers->at(i+1).at(k).deltaErr * layers->at(i).at(j).out;
-        layers->at(i).at(j).links.at(k).weight += deltaWeight;
+        layers->at(i).at(j).links.at(k).weight += deltaWeight+ alpha*layers->at(i).at(j).links.at(k).prevDeltaWeight;
+        layers->at(i).at(j).links.at(k).prevDeltaWeight = deltaWeight;
         /*cout << "new weight at (" << i<<","<< j<<") -> ("<< i+1<<","<<k <<") = "
           <<layers->at(i).at(j).links.at(k).weight <<
           "(+ " << deltaWeight << ")" << endl;*/
