@@ -24,7 +24,7 @@ double activationFuncDerivative(double net) {
 
 int main()
 {
-    TrainingData trainData("./training(A.B)U(B.C)U(C.D).txt");
+    TrainingData trainData("./trainingData.txt");
     // e.g., { 2, 4, 1 }
     std::vector<unsigned> topology;
 
