@@ -1,17 +1,9 @@
 #include "Net.h"
 using namespace std;
 
-double activationFunc(double net) {
-
-  return 1.0/(1.0+exp(-net));
-
-}
-
-
-
-
-
-Net::Net(const std::vector<unsigned> &topology, const double eta) {
+Net::Net(const std::vector<unsigned> &topology, const double eta, double (*atvfunc)(double), double (*atv_derv)(double)) {
+  activation = atvfunc;
+  atv_derivative = atv_derv;
   Net::topology=topology;
   Net::eta = eta;
 
@@ -62,7 +54,7 @@ void Net::feedForward(const std::vector<double> &inputVals) {
       }
       //std::cout << "feed forward neuron (" << k<< "," << j<< "): net ="<< netValue << ", out=" << activationFunc(netValue) << endl;
       layers->at(k).at(j).net = netValue;
-      layers->at(k).at(j).out = activationFunc(netValue);
+      layers->at(k).at(j).out = activation(netValue);
     }
   }
 }
@@ -75,7 +67,8 @@ void Net::backProp(const std::vector<double> &targetVals) {
   for (int i=0; i<layers->at(layers->size()-1).size(); ++i) {
     double deltaErr=0;
     double currentOut = layers->at(layers->size()-1).at(i).out;
-    deltaErr = currentOut * (1-currentOut)* (targetVals[i]-currentOut);
+    double currentNet = layers->at(layers->size()-1).at(i).net;
+    deltaErr = atv_derivative(currentNet)*(targetVals[i]-currentOut);
     layers->at(layers->size()-1).at(i).deltaErr = deltaErr;
     //std::cout << "deltaErr = " << deltaErr << std::endl;
   }
@@ -88,13 +81,14 @@ void Net::backProp(const std::vector<double> &targetVals) {
       double deltaErr=0;
       double propagatedErr=0;
       double currentOut = layers->at(k).at(i).out;
+      double currentNet = layers->at(k).at(i).net;
 
       // for each links towards hidden unit, calculate propogetedErr
       for (int j=0; j<layers->at(k+1).size(); ++j) {
         propagatedErr += (layers->at(k).at(i).links.at(j).weight) * (layers->at(k+1).at(j).deltaErr);
       }
 
-      deltaErr = currentOut * (1-currentOut)*propagatedErr;
+      deltaErr = atv_derivative(currentNet)*propagatedErr;
       layers->at(k).at(i).deltaErr = deltaErr;
       //std::cout << "deltaErr = " << deltaErr << std::endl;
     }
