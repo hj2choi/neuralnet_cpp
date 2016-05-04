@@ -1,6 +1,7 @@
 #include "TrainingData.h"
 #include "Net.h"
 #define ETA 0.5 // net learning rate, [0.0..1.0]
+#define trainingFile "training(A.B)U(B.C)U(C.D).txt"
 
 void showVectorVals(std::string label, std::vector<double> &v)
 {
@@ -23,7 +24,7 @@ double activationFuncDerivative(double net) {
 
 int main()
 {
-    TrainingData trainData("./training(A.B)U(B.C)U(C.D).txt");
+    TrainingData trainData(trainingFile);
     // e.g., { 2, 4, 1 }
     std::vector<unsigned> topology;
 
